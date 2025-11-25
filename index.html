@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Choreo Idea Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #1f2937, #020617);
+      color: #f9fafb;
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 1100px;
+      margin: 24px;
+      padding: 24px;
+      border-radius: 24px;
+      background: rgba(15, 23, 42, 0.92);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      margin: 0;
+      letter-spacing: 0.04em;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #9ca3af;
+    }
+
+    .tag {
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: #e5e7eb;
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 800px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.85);
+      border-radius: 18px;
+      padding: 18px 18px 20px;
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+      margin: 0 0 6px;
+    }
+
+    .card p {
+      margin: 0 0 12px;
+      font-size: 0.9rem;
+      color: #9ca3af;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+
+    select,
+    textarea {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      padding: 9px 10px;
+      font-size: 0.9rem;
+      outline: none;
+      resize: vertical;
+    }
+
+    select:focus,
+    textarea:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+    }
+
+    textarea {
+      min-height: 130px;
+    }
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0 14px;
+      align-items: center;
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 9px 18px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      color: #0b1120;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.08s ease, box-shadow 0.08s ease,
+        filter 0.08s ease;
+      box-shadow: 0 10px 24px rgba(56, 189, 248, 0.35);
+      white-space: nowrap;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 14px 32px rgba(56, 189, 248, 0.5);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 16px rgba(56, 189, 248, 0.35);
+    }
+
+    .secondary-btn {
+      background: transparent;
+      color: #e5e7eb;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      box-shadow: none;
+    }
+
+    .secondary-btn:hover {
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
+      filter: none;
+    }
+
+    .pill {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      color: #9ca3af;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .output {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px dashed rgba(55, 65, 81, 0.9);
+      min-height: 48px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+
+    .chip {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(15, 118, 110, 0.2);
+      border: 1px solid rgba(45, 212, 191, 0.6);
+      color: #a5f3fc;
+      font-size: 0.85rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .chip-alt {
+      background: rgba(30, 64, 175, 0.25);
+      border-color: rgba(96, 165, 250, 0.7);
+      color: #bfdbfe;
+    }
+
+    .muted {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    footer {
+      margin-top: 18px;
+      font-size: 0.78rem;
+      color: #6b7280;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .footer-note {
+      max-width: 70%;
+    }
+
+    @media (max-width: 700px) {
+      .wrapper {
+        margin: 16px;
+        padding: 18px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      .footer-note {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <div class="brand">
+        <h1>Choreo Seed</h1>
+        <p class="subtitle">
+          Tiny prompts for big ideas – generate directions, textures and moods
+          for your next piece.
+        </p>
+      </div>
+      <span class="tag">For choreographers & creatives</span>
+    </header>
+
+    <main>
+      <!-- LEFT COLUMN: RANDOM 3-WORD GENERATOR -->
+      <section class="card">
+        <h2>🎲 Random 3-Word Generator</h2>
+        <p>Pick a style and get three movement ideas to start a combo or phrase.</p>
+
+        <div>
+          <label for="style-select">Dance style</label>
+          <select id="style-select">
+            <option value="any">Any / Mixed</option>
+            <option value="hiphop">Hip Hop</option>
+            <option value="contemporary">Contemporary</option>
+            <option value="ballet">Ballet</option>
+            <option value="jazz">Jazz</option>
+            <option value="kpop">K-Pop</option>
+            <option value="heels">Heels</option>
+            <option value="experimental">Experimental</option>
+          </select>
+        </div>
+
+        <div class="controls-row">
+          <button id="generate-words-btn">
+            Generate 3 words
+          </button>
+          <span class="pill">Use them for: levels · directions · textures</span>
+        </div>
+
+        <div id="random-output" class="output">
+          <span class="muted">Your three words will appear here.</span>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN: KEYWORDS FROM SONG -->
+      <section class="card">
+        <h2>🎧 3 Keywords from a Song</h2>
+        <p>Paste lyrics or a description of the song’s vibe. We’ll pull 3 words
+          you can choreograph around.</p>
+
+        <label for="lyrics-input">Lyrics or description</label>
+        <textarea
+          id="lyrics-input"
+          placeholder="Example: 'The song feels dark and moody, with a heavy bass and sharp stabs, but the chorus opens into something hopeful...'"
+        ></textarea>
+
+        <div class="controls-row">
+          <button id="extract-keywords-btn">
+            Extract 3 keywords
+          </button>
+          <button id="clear-text-btn" class="secondary-btn">
+            Clear
+          </button>
+        </div>
+
+        <div id="keywords-output" class="output">
+          <span class="muted">Your three song-inspired words will appear here.</span>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-note">
+        Tip: Use one word for <strong>pathway</strong>, one for
+        <strong>texture</strong>, and one for <strong>emotion</strong>. Build a
+        phrase that must include all three.
+      </div>
+      <div class="muted">
+        Prototype – customize word lists to match your own style.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // WORD POOLS FOR EACH STYLE
+    const wordPools = {
+      any: [
+        "sharp",
+        "melt",
+        "swing",
+        "ripple",
+        "sudden",
+        "spiral",
+        "stillness",
+        "drag",
+        "snap",
+        "fold",
+        "unfold",
+        "slice",
+        "float",
+        "groove",
+        "punch",
+        "trace",
+        "reach",
+        "collapse",
+        "rebound",
+        "hover",
+        "floor",
+        "jump",
+        "tilt",
+        "twist",
+        "glide",
+        "isolate",
+        "wave",
+        "reverse",
+        "suspend"
+      ],
+      hiphop: [
+        "groove",
+        "bounce",
+        "hit",
+        "slide",
+        "lock",
+        "pop",
+        "isolate",
+        "rock",
+        "drop",
+        "wave",
+        "bounce back",
+        "snatch",
+        "slow-mo",
+        "floor tap",
+        "chest pop",
+        "head nod",
+        "walk-out",
+        "groove pocket"
+      ],
+      contemporary: [
+        "spiral",
+        "reach",
+        "fall",
+        "sustain",
+        "release",
+        "floor roll",
+        "swing",
+        "tilt",
+        "off-balance",
+        "melt",
+        "carve",
+        "collapse",
+        "expand",
+        "thread",
+        "suspend",
+        "shift weight"
+      ],
+      ballet: [
+        "plié",
+        "tendu",
+        "relevé",
+        "arabesque",
+        "turn-out",
+        "line",
+        "elongate",
+        "spot",
+        "jeté",
+        "port de bras",
+        "échappé",
+        "pirouette",
+        "chassé",
+        "balance",
+        "en dedans",
+        "en dehors"
+      ],
+      jazz: [
+        "kick",
+        "ball-change",
+        "jazz walk",
+        "isolation",
+        "sharp arm",
+        "snap",
+        "turn",
+        "lunge",
+        "syncopation",
+        "sassy",
+        "hit pose",
+        "fan kick",
+        "body roll",
+        "accent",
+        "travel"
+      ],
+      kpop: [
+        "point move",
+        "groove",
+        "clean line",
+        "level change",
+        "hand detail",
+        "switch pathway",
+        "group picture",
+        "travel formation",
+        "tempo change",
+        "facial",
+        "clap",
+        "hip hit",
+        "arm picture",
+        "slide to center",
+        "walk-in"
+      ],
+      heels: [
+        "walk",
+        "hair whip",
+        "arch",
+        "slow drag",
+        "hip circle",
+        "body roll",
+        "pose",
+        "line extension",
+        "floor touch",
+        "turn",
+        "catwalk",
+        "pause",
+        "trace leg",
+        "drop",
+        "sharp flick"
+      ],
+      experimental: [
+        "distort",
+        "shake",
+        "fragment",
+        "repeat",
+        "pause",
+        "interrupt",
+        "reverse",
+        "glitch",
+        "micro-move",
+        "still stare",
+        "awkward angle",
+        "floor noise",
+        "gesture loop",
+        "off-count",
+        "breath-led"
+      ]
+    };
+
+    const stopWords = new Set([
+      "the",
+      "a",
+      "an",
+      "and",
+      "or",
+      "but",
+      "if",
+      "in",
+      "on",
+      "with",
+      "for",
+      "to",
+      "of",
+      "at",
+      "by",
+      "from",
+      "that",
+      "this",
+      "it",
+      "is",
+      "are",
+      "was",
+      "were",
+      "as",
+      "into",
+      "through",
+      "up",
+      "down",
+      "out",
+      "over",
+      "again",
+      "then",
+      "once",
+      "so",
+      "very",
+      "just",
+      "only",
+      "like",
+      "feel",
+      "feels",
+      "feeling",
+      "i",
+      "you",
+      "we",
+      "they",
+      "he",
+      "she",
+      "me",
+      "my",
+      "your",
+      "our",
+      "their"
+    ]);
+
+    function getRandomWords(styleKey) {
+      const pool = wordPools[styleKey] || wordPools.any;
+      if (pool.length < 3) return pool;
+
+      const copy = [...pool];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy.slice(0, 3);
+    }
+
+    function extractKeywords(text) {
+      const words = text
+        .toLowerCase()
+        .match(/[a-záéíóúüñ]+/gi);
+
+      if (!words) return [];
+
+      const freq = new Map();
+
+      for (const raw of words) {
+        const w = raw.toLowerCase();
+        if (w.length < 4) continue;
+        if (stopWords.has(w)) continue;
+
+        freq.set(w, (freq.get(w) || 0) + 1);
+      }
+
+      const sorted = [...freq.entries()].sort((a, b) => b[1] - a[1]);
+      return sorted.slice(0, 3).map(([w]) => w);
+    }
+
+    // DOM HOOKS
+    const styleSelect = document.getElementById("style-select");
+    const randomOutput = document.getElementById("random-output");
+    const generateBtn = document.getElementById("generate-words-btn");
+
+    const lyricsInput = document.getElementById("lyrics-input");
+    const keywordsOutput = document.getElementById("keywords-output");
+    const extractBtn = document.getElementById("extract-keywords-btn");
+    const clearBtn = document.getElementById("clear-text-btn");
+
+    generateBtn.addEventListener("click", () => {
+      const styleKey = styleSelect.value;
+      const words = getRandomWords(styleKey);
+
+      randomOutput.innerHTML = "";
+
+      if (!words.length) {
+        randomOutput.innerHTML =
+          '<span class="muted">Not enough words in this pool yet.</span>';
+        return;
+      }
+
+      words.forEach((w, index) => {
+        const chip = document.createElement("span");
+        chip.className = "chip";
+        chip.textContent = w;
+        randomOutput.appendChild(chip);
+      });
+    });
+
+    extractBtn.addEventListener("click", () => {
+      const text = lyricsInput.value.trim();
+      keywordsOutput.innerHTML = "";
+
+      if (!text) {
+        keywordsOutput.innerHTML =
+          '<span class="muted">Paste some lyrics or a description first.</span>';
+        return;
+      }
+
+      const words = extractKeywords(text);
+
+      if (!words.length) {
+        keywordsOutput.innerHTML =
+          '<span class="muted">Couldn’t find strong keywords – try adding more detailed text.</span>';
+        return;
+      }
+
+      words.forEach((w) => {
+        const chip = document.createElement("span");
+        chip.className = "chip chip-alt";
+        chip.textContent = w;
+        keywordsOutput.appendChild(chip);
+      });
+    });
+
+    clearBtn.addEventListener("click", () => {
+      lyricsInput.value = "";
+      keywordsOutput.innerHTML =
+        '<span class="muted">Your three song-inspired words will appear here.</span>';
+    });
+  </script>
+</body>
+</html>
