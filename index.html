@@ -2,72 +2,85 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Choreo Idea Generator</title>
+  <title>Choreology – Choreo Idea Generator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Elegant fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+
   <style>
     * {
       box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
     }
 
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      background: radial-gradient(circle at top, #1f2937, #020617);
-      color: #f9fafb;
-      min-height: 100vh;
-      display: flex;
-      align-items: stretch;
-      justify-content: center;
+      background: #ffffff;
+      color: #111111;
+      padding: 40px 16px;
     }
 
     .wrapper {
-      width: 100%;
-      max-width: 1100px;
-      margin: 24px;
-      padding: 24px;
-      border-radius: 24px;
-      background: rgba(15, 23, 42, 0.92);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(148, 163, 184, 0.2);
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 32px 28px;
+      border-radius: 20px;
+      background: #fafafa;
+      border: 1px solid #e5e5e5;
     }
 
     header {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      gap: 16px;
-      align-items: center;
+      align-items: flex-start;
+      gap: 12px;
       margin-bottom: 24px;
     }
 
     .brand {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
+    }
+
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #111111;
     }
 
     h1 {
-      font-size: 1.9rem;
-      margin: 0;
+      font-size: 2.2rem;
+      font-weight: 600;
       letter-spacing: 0.04em;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin: 0 0 6px;
     }
 
     .subtitle {
       margin: 0;
       font-size: 0.95rem;
-      color: #9ca3af;
+      color: #555555;
+      max-width: 520px;
+      line-height: 1.4;
     }
 
     .tag {
-      padding: 6px 12px;
+      padding: 6px 14px;
       border-radius: 999px;
+      border: 1px solid #d4d4d4;
       font-size: 0.75rem;
       text-transform: uppercase;
-      letter-spacing: 0.11em;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      color: #e5e7eb;
-      background: rgba(15, 23, 42, 0.7);
+      letter-spacing: 0.14em;
+      color: #444444;
+      background: #ffffff;
+      align-self: center;
     }
 
     main {
@@ -76,37 +89,41 @@
       gap: 20px;
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 880px) {
       main {
         grid-template-columns: minmax(0, 1fr);
+      }
+      .wrapper {
+        padding: 22px 16px;
+      }
+      body {
+        padding: 24px 10px;
+      }
+      h1 {
+        font-size: 1.8rem;
       }
     }
 
     .card {
-      background: rgba(15, 23, 42, 0.85);
-      border-radius: 18px;
-      padding: 18px 18px 20px;
-      border: 1px solid rgba(51, 65, 85, 0.9);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
-    }
-
-    .card h2 {
-      font-size: 1.1rem;
-      margin: 0 0 6px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px 18px 22px;
+      border: 1px solid #dddddd;
     }
 
     .card p {
       margin: 0 0 12px;
-      font-size: 0.9rem;
-      color: #9ca3af;
+      font-size: 0.92rem;
+      color: #444444;
+      line-height: 1.5;
     }
 
     label {
       display: block;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: #9ca3af;
+      color: #777777;
       margin-bottom: 6px;
     }
 
@@ -114,9 +131,9 @@
     textarea {
       width: 100%;
       border-radius: 10px;
-      border: 1px solid rgba(75, 85, 99, 0.9);
-      background: rgba(15, 23, 42, 0.9);
-      color: #e5e7eb;
+      border: 1px solid #cccccc;
+      background: #f8f8f8;
+      color: #111111;
       padding: 9px 10px;
       font-size: 0.9rem;
       outline: none;
@@ -125,8 +142,7 @@
 
     select:focus,
     textarea:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+      border-color: #111111;
     }
 
     textarea {
@@ -137,99 +153,82 @@
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin: 10px 0 14px;
+      margin: 12px 0 14px;
       align-items: center;
     }
 
     button {
       border-radius: 999px;
-      border: none;
-      padding: 9px 18px;
-      font-size: 0.9rem;
+      border: 1px solid #111111;
+      padding: 8px 18px;
+      font-size: 0.85rem;
       font-weight: 500;
       cursor: pointer;
-      background: linear-gradient(135deg, #38bdf8, #a855f7);
-      color: #0b1120;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: transform 0.08s ease, box-shadow 0.08s ease,
-        filter 0.08s ease;
-      box-shadow: 0 10px 24px rgba(56, 189, 248, 0.35);
+      background: #111111;
+      color: #ffffff;
+      transition: background 0.18s ease, color 0.18s ease;
       white-space: nowrap;
     }
 
     button:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-      box-shadow: 0 14px 32px rgba(56, 189, 248, 0.5);
-    }
-
-    button:active {
-      transform: translateY(0);
-      box-shadow: 0 8px 16px rgba(56, 189, 248, 0.35);
+      background: #ffffff;
+      color: #111111;
     }
 
     .secondary-btn {
-      background: transparent;
-      color: #e5e7eb;
-      border: 1px solid rgba(75, 85, 99, 0.9);
-      box-shadow: none;
+      background: #ffffff;
+      color: #111111;
     }
 
     .secondary-btn:hover {
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
-      filter: none;
+      background: #111111;
+      color: #ffffff;
     }
 
     .pill {
       font-size: 0.75rem;
       padding: 4px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(75, 85, 99, 0.9);
-      color: #9ca3af;
-      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #d4d4d4;
+      color: #555555;
+      background: #f5f5f5;
     }
 
     .output {
-      margin-top: 10px;
-      padding: 10px 12px;
+      margin-top: 12px;
+      padding: 12px 14px;
       border-radius: 12px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px dashed rgba(55, 65, 81, 0.9);
-      min-height: 48px;
+      background: #f8f8f8;
+      border: 1px dashed #cccccc;
+      min-height: 46px;
       display: flex;
       flex-wrap: wrap;
-      align-items: center;
       gap: 8px;
-      font-size: 0.95rem;
+      align-items: center;
     }
 
     .chip {
       padding: 6px 12px;
       border-radius: 999px;
-      background: rgba(15, 118, 110, 0.2);
-      border: 1px solid rgba(45, 212, 191, 0.6);
-      color: #a5f3fc;
-      font-size: 0.85rem;
-      backdrop-filter: blur(4px);
+      background: #111111;
+      color: #ffffff;
+      font-size: 0.82rem;
     }
 
     .chip-alt {
-      background: rgba(30, 64, 175, 0.25);
-      border-color: rgba(96, 165, 250, 0.7);
-      color: #bfdbfe;
+      background: #333333;
+      color: #ffffff;
     }
 
     .muted {
-      font-size: 0.8rem;
-      color: #6b7280;
+      font-size: 0.78rem;
+      color: #777777;
     }
 
     footer {
       margin-top: 18px;
       font-size: 0.78rem;
-      color: #6b7280;
+      color: #555555;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
@@ -242,13 +241,6 @@
     }
 
     @media (max-width: 700px) {
-      .wrapper {
-        margin: 16px;
-        padding: 18px;
-      }
-      h1 {
-        font-size: 1.5rem;
-      }
       .footer-note {
         max-width: 100%;
       }
@@ -259,20 +251,19 @@
   <div class="wrapper">
     <header>
       <div class="brand">
-        <h1>Choreo Seed</h1>
+        <h1>Choreology</h1>
         <p class="subtitle">
-          Tiny prompts for big ideas – generate directions, textures and moods
-          for your next piece.
+          A minimal tool for choreographers – generate movement prompts and song-based ideas to start your next piece.
         </p>
       </div>
-      <span class="tag">For choreographers & creatives</span>
+      <span class="tag">choreo · ideas · seeds</span>
     </header>
 
     <main>
       <!-- LEFT COLUMN: RANDOM 3-WORD GENERATOR -->
       <section class="card">
-        <h2>🎲 Random 3-Word Generator</h2>
-        <p>Pick a style and get three movement ideas to start a combo or phrase.</p>
+        <h2>Random 3-Word Prompt</h2>
+        <p>Pick a style and get three movement ideas to build a phrase, combo, or improv task.</p>
 
         <div>
           <label for="style-select">Dance style</label>
@@ -289,10 +280,9 @@
         </div>
 
         <div class="controls-row">
-          <button id="generate-words-btn">
-            Generate 3 words
-          </button>
-          <span class="pill">Use them for: levels · directions · textures</span>
+          <button id="generate-words-btn">Generate 3 words</button>
+          <button id="save-words-btn" class="secondary-btn">Save this prompt</button>
+          <span class="pill">Think: levels · direction · texture</span>
         </div>
 
         <div id="random-output" class="output">
@@ -302,23 +292,18 @@
 
       <!-- RIGHT COLUMN: KEYWORDS FROM SONG -->
       <section class="card">
-        <h2>🎧 3 Keywords from a Song</h2>
-        <p>Paste lyrics or a description of the song’s vibe. We’ll pull 3 words
-          you can choreograph around.</p>
+        <h2>3 Keywords from a Song</h2>
+        <p>Paste lyrics or describe the song’s energy. We’ll pull three strong words you can choreograph around.</p>
 
         <label for="lyrics-input">Lyrics or description</label>
         <textarea
           id="lyrics-input"
-          placeholder="Example: 'The song feels dark and moody, with a heavy bass and sharp stabs, but the chorus opens into something hopeful...'"
+          placeholder="Example: 'Dark, pulsing beat with sharp hits, but the chorus opens up and feels hopeful and expansive...'"
         ></textarea>
 
         <div class="controls-row">
-          <button id="extract-keywords-btn">
-            Extract 3 keywords
-          </button>
-          <button id="clear-text-btn" class="secondary-btn">
-            Clear
-          </button>
+          <button id="extract-keywords-btn">Extract 3 keywords</button>
+          <button id="clear-text-btn" class="secondary-btn">Clear text</button>
         </div>
 
         <div id="keywords-output" class="output">
@@ -327,15 +312,27 @@
       </section>
     </main>
 
+    <!-- SAVED IDEAS -->
+    <section class="card" style="margin-top: 18px;">
+      <h2>Saved Prompts</h2>
+      <p class="muted">
+        Click “Save this prompt” whenever you like a 3-word set. Use them later for pieces, class combos, or drills.
+      </p>
+      <div
+        id="saved-list"
+        class="output"
+        style="flex-direction: column; align-items: flex-start;"
+      >
+        <span class="muted">No saved prompts yet.</span>
+      </div>
+    </section>
+
     <footer>
       <div class="footer-note">
-        Tip: Use one word for <strong>pathway</strong>, one for
-        <strong>texture</strong>, and one for <strong>emotion</strong>. Build a
-        phrase that must include all three.
+        Idea: pick one word for <strong>pathway</strong>, one for <strong>texture</strong>, and one for
+        <strong>emotion</strong> — your phrase has to include all three.
       </div>
-      <div class="muted">
-        Prototype – customize word lists to match your own style.
-      </div>
+      <div class="muted">Choreology · prototype v1</div>
     </footer>
   </div>
 
@@ -499,6 +496,7 @@
       ]
     };
 
+    // Common words to ignore when extracting keywords
     const stopWords = new Set([
       "the",
       "a",
@@ -567,10 +565,7 @@
     }
 
     function extractKeywords(text) {
-      const words = text
-        .toLowerCase()
-        .match(/[a-záéíóúüñ]+/gi);
-
+      const words = text.toLowerCase().match(/[a-záéíóúüñ]+/gi);
       if (!words) return [];
 
       const freq = new Map();
@@ -579,7 +574,6 @@
         const w = raw.toLowerCase();
         if (w.length < 4) continue;
         if (stopWords.has(w)) continue;
-
         freq.set(w, (freq.get(w) || 0) + 1);
       }
 
@@ -587,7 +581,7 @@
       return sorted.slice(0, 3).map(([w]) => w);
     }
 
-    // DOM HOOKS
+    // DOM elements
     const styleSelect = document.getElementById("style-select");
     const randomOutput = document.getElementById("random-output");
     const generateBtn = document.getElementById("generate-words-btn");
@@ -596,6 +590,51 @@
     const keywordsOutput = document.getElementById("keywords-output");
     const extractBtn = document.getElementById("extract-keywords-btn");
     const clearBtn = document.getElementById("clear-text-btn");
+
+    const saveBtn = document.getElementById("save-words-btn");
+    const savedList = document.getElementById("saved-list");
+
+    let savedPrompts = [];
+
+    function renderSavedPrompts() {
+      savedList.innerHTML = "";
+
+      if (!savedPrompts.length) {
+        savedList.innerHTML = '<span class="muted">No saved prompts yet.</span>';
+        return;
+      }
+
+      savedPrompts.forEach((item, index) => {
+        const row = document.createElement("div");
+        row.style.display = "flex";
+        row.style.flexWrap = "wrap";
+        row.style.gap = "8px";
+        row.style.alignItems = "center";
+        row.style.width = "100%";
+
+        const label = document.createElement("span");
+        label.className = "muted";
+        label.textContent = `${index + 1}. ${item.styleLabel}`;
+
+        const chipContainer = document.createElement("span");
+        chipContainer.style.display = "flex";
+        chipContainer.style.flexWrap = "wrap";
+        chipContainer.style.gap = "6px";
+
+        item.words.forEach((w) => {
+          const chip = document.createElement("span");
+          chip.className = "chip";
+          chip.textContent = w;
+          chipContainer.appendChild(chip);
+        });
+
+        row.appendChild(label);
+        row.appendChild(chipContainer);
+        savedList.appendChild(row);
+      });
+    }
+
+    // Events
 
     generateBtn.addEventListener("click", () => {
       const styleKey = styleSelect.value;
@@ -609,7 +648,7 @@
         return;
       }
 
-      words.forEach((w, index) => {
+      words.forEach((w) => {
         const chip = document.createElement("span");
         chip.className = "chip";
         chip.textContent = w;
@@ -648,6 +687,29 @@
       keywordsOutput.innerHTML =
         '<span class="muted">Your three song-inspired words will appear here.</span>';
     });
+
+    saveBtn.addEventListener("click", () => {
+      const chips = randomOutput.querySelectorAll(".chip");
+      if (!chips.length) {
+        alert("Generate a 3-word prompt first!");
+        return;
+      }
+
+      const words = Array.from(chips).map((chip) => chip.textContent);
+      const styleKey = styleSelect.value;
+      const styleLabel = styleSelect.options[styleSelect.selectedIndex].text || styleKey;
+
+      savedPrompts.push({
+        styleKey,
+        styleLabel,
+        words
+      });
+
+      renderSavedPrompts();
+    });
+
+    // Initial render
+    renderSavedPrompts();
   </script>
 </body>
 </html>
