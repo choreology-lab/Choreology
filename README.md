@@ -1,1 +1,1 @@
-I you are a dance, then you'll know.
+If you are a dance, then you'll know.
